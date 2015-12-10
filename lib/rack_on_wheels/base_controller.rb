@@ -1,0 +1,2 @@
+class RackOnWheels::BaseController  
+end
