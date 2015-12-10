@@ -21,6 +21,7 @@ class RackOnWheels::Router
     end
 
     def find_route(request)
+      request.path_info
       routes[request.request_method.downcase.to_sym].first
     end
 
