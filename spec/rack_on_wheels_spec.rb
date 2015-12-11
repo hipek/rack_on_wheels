@@ -22,8 +22,23 @@ describe RackOnWheels do
     expect(described_class::VERSION).not_to be nil
   end
 
-  it 'has blank hash with routes' do
-    expect(described_class.routes).to eql({})
+  describe '#routes' do
+    context 'default' do
+      it 'has blank hash' do
+        expect(described_class.routes).to eql({})
+      end
+    end
+
+    context 'when key not present' do
+      let(:list) do
+        described_class.routes[:get]
+      end
+
+      it 'returns empty set' do
+        expect(list).to be_empty
+        expect(list).to be_kind_of Set
+      end
+    end
   end
 
   it 'has blank list of middlewares' do

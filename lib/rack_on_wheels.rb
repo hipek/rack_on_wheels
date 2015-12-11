@@ -15,7 +15,7 @@ module RackOnWheels
     attr_reader :routes, :middlewares
 
     def routes
-      @routes ||= Hash.new { |hash, key| hash[key] = [] }
+      @routes ||= Hash.new { |hash, key| hash[key] = Set.new }
     end
 
     def middlewares

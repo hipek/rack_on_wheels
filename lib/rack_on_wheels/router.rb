@@ -16,14 +16,24 @@ module RackOnWheels
       end
     end
 
+    Matcher = Struct.new(:path, :routes) do
+      def detect
+        routes.find do |route|
+          route.path == path
+        end
+      end
+    end
+
     class << self
       def setup(&blk)
         new.setup(&blk)
       end
 
       def find_route(request)
-        request.path_info
-        routes[request.request_method.downcase.to_sym].first
+        Matcher.new(
+          request.path_info,
+          routes[request.request_method.downcase.to_sym]
+        ).detect
       end
 
       def routes
