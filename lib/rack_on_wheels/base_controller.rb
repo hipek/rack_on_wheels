@@ -1,15 +1,17 @@
-class RackOnWheels::BaseController < Struct.new(:request)
-  class << self
-    def build(route, request)
-      const_get("#{route.controller}Controller").new(request)
+module RackOnWheels
+  BaseController = Struct.new(:request) do
+    class << self
+      def build(route, request)
+        const_get("#{route.controller}Controller").new(request)
+      end
     end
-  end
 
-  def response
-    @response ||= Rack::Response.new
-  end
+    def response
+      @response ||= Rack::Response.new
+    end
 
-  def render(data)
-    response.write data
+    def render(data)
+      response.write data
+    end
   end
 end

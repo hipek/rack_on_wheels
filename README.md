@@ -34,7 +34,7 @@ Run unit tests:
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/rack_on_wheels.
+Bug reports and pull requests are welcome on GitHub at https://github.com/hipek/rack_on_wheels.
 
 
 ## License

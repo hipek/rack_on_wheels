@@ -1,4 +1,4 @@
-require "rack_on_wheels/version"
+require 'rack_on_wheels/version'
 
 require 'rack'
 require 'json'
