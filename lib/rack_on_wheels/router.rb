@@ -1,12 +1,11 @@
 module RackOnWheels
   class Router
     class Route
-      attr_accessor :controller, :action, :path, :to, :opts
+      attr_accessor :controller, :action, :path, :to, :params
 
-      def initialize(path, to, opts = nil)
+      def initialize(path, to)
         @path = path
         @to   = to
-        @opts = opts || {}
         parse_to to
       end
 
@@ -18,9 +17,37 @@ module RackOnWheels
 
     Matcher = Struct.new(:path, :routes) do
       def detect
-        routes.find do |route|
-          route.path == path
+        routes.detect do |route|
+          case route.path
+            when /\/\:\w+\/?/
+              !build_params(route).empty?
+            when String
+              route.path == path
+            when Regexp
+              path.match route.path
+            else
+              false
+          end
         end
+      end
+
+      def build_params(route)
+        list = route.path.split('/').zip path.split('/')
+        return {} if paths_not_match?(list)
+        route.params = map_params list
+      end
+
+      def paths_not_match?(list)
+        list.any?{ |pair| !pair[0].match(/\:/) && pair[1].nil? }
+      end
+
+      def map_params(list)
+        list.map do |pair|
+          if pair.uniq.size == 2 && pair[0].match(/\:/)
+            pair[0] = pair[0].tr(':', '').to_sym
+            pair
+          end
+        end.compact.to_h
       end
     end
 
@@ -46,15 +73,15 @@ module RackOnWheels
     end
 
     RackOnWheels::HTTP_METHODS.each do |name|
-      define_method name do |path, to, *opts|
-        add_route name, path, to, opts.first
+      define_method name do |path, to|
+        add_route name, path, to
       end
     end
 
     protected
 
-    def add_route(method, path, to, opts)
-      routes[method] << Route.new(path, to, opts)
+    def add_route(method, path, to)
+      routes[method] << Route.new(path, to)
     end
 
     def routes
