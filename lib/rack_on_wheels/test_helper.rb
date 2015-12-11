@@ -1,11 +1,9 @@
 module RackOnWheels
   module TestHelper
+    attr_accessor :response
+
     def request
       Rack::MockRequest.new(RackOnWheels.application)
-    end
-
-    def response
-      @response
     end
 
     RackOnWheels::HTTP_METHODS.each do |name|
