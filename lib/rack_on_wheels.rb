@@ -3,11 +3,14 @@ require 'rack_on_wheels/version'
 require 'rack'
 require 'json'
 
-require 'rack_on_wheels/app'
-require 'rack_on_wheels/router'
-require 'rack_on_wheels/base_controller'
-
 module RackOnWheels
+  HTTP_METHODS = %i(post get put delete)
+
+  require 'rack_on_wheels/app'
+  require 'rack_on_wheels/router'
+  require 'rack_on_wheels/base_controller'
+  require 'rack_on_wheels/test_helper'
+
   class << self
     attr_reader :routes, :middlewares
 

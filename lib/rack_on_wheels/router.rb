@@ -35,7 +35,7 @@ module RackOnWheels
       instance_eval(&blk)
     end
 
-    %i(post get put delete).each do |name|
+    RackOnWheels::HTTP_METHODS.each do |name|
       define_method name do |path, to, *opts|
         add_route name, path, to, opts.first
       end

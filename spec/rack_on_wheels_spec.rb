@@ -18,10 +18,6 @@ class TestJsonResponseMiddleMiddleware
 end
 
 describe RackOnWheels do
-  let(:request) do
-    Rack::MockRequest.new(described_class.application)
-  end
-
   it 'has a version number' do
     expect(described_class::VERSION).not_to be nil
   end
@@ -42,8 +38,10 @@ describe RackOnWheels do
     end
 
     describe 'GET request' do
+      before { get '/test/new' }
+
       it 'returns text body' do
-        expect(request.get('/users/new').body).to eql('text')
+        expect(response.body).to eql('text')
       end
     end
 
@@ -53,17 +51,21 @@ describe RackOnWheels do
           described_class.middlewares << TestJsonResponseMiddleMiddleware
         end
 
+        before { get '/test/new' }
+
         after { described_class.middlewares.clear }
 
         it 'has HTTP_ACCEPT in headers' do
-          expect(request.get('/test/new').headers['HTTP_ACCEPT'])
+          expect(response.headers['HTTP_ACCEPT'])
             .to eql('application/json')
         end
       end
 
       context 'when not added' do
+        before { get '/test/new' }
+
         it 'doesn\'t have HTTP_ACCEPT in headers' do
-          expect(request.get('/test/new').headers['HTTP_ACCEPT'])
+          expect(response.headers['HTTP_ACCEPT'])
             .to be_nil
         end
       end
