@@ -9,24 +9,31 @@ require 'rack_on_wheels/base_controller'
 
 module RackOnWheels
   class << self
-    attr_reader :routes
+    attr_reader :routes, :middlewares
 
     def routes
       @routes ||= Hash.new { |hash, key| hash[key] = [] }
+    end
+
+    def middlewares
+      @middlewares ||= []
     end
 
     def root
       File.expand_path('../../', __FILE__)
     end
 
-    def rack_app
+    def application
       Rack::Builder.new do
+        RackOnWheels.middlewares.each do |middleware|
+          use middleware
+        end
         run RackOnWheels::App
       end
     end
 
     def run
-      Rack::Server.start app: rack_app
+      Rack::Server.start app: application
     end
   end
 end
