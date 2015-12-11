@@ -48,15 +48,24 @@ describe RackOnWheels do
     end
 
     describe '#middlewares' do
-      before do
-        described_class.middlewares << TestJsonResponseMiddleMiddleware
+      context 'when added' do
+        before do
+          described_class.middlewares << TestJsonResponseMiddleMiddleware
+        end
+
+        after { described_class.middlewares.clear }
+
+        it 'has HTTP_ACCEPT in headers' do
+          expect(request.get('/test/new').headers['HTTP_ACCEPT'])
+            .to eql('application/json')
+        end
       end
 
-      after { described_class.middlewares.clear }
-
-      it 'has HTTP_ACCEPT in headers' do
-        expect(request.get('/test/new').headers['HTTP_ACCEPT'])
-          .to eql('application/json')
+      context 'when not added' do
+        it 'doesn\'t have HTTP_ACCEPT in headers' do
+          expect(request.get('/test/new').headers['HTTP_ACCEPT'])
+            .to be_nil
+        end
       end
     end
   end

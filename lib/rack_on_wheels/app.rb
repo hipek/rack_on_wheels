@@ -18,7 +18,11 @@ module RackOnWheels
       end
 
       def set_headers
-        controller.response.headers['HTTP_ACCEPT'] = request.env['HTTP_ACCEPT']
+        %w[HTTP_ACCEPT].each do |name|
+          if request.env[name]
+            controller.response.headers[name] = request.env[name]
+          end
+        end
       end
     end
   end
