@@ -1,9 +1,9 @@
 class WelcomeController < RackOnWheels::BaseController
   def index
-    'index'
+    'Welcome on index page'
   end
 
   def show
-    'show'
+    { show: 'as json' }.to_json
   end
 end
