@@ -19,10 +19,10 @@ module RackOnWheels
       def detect
         routes.detect do |route|
           case route.path
-          when %r{\/\:\w+\/?} then !build_params(route).empty?
-          when String then route.path == path
           when Regexp then path.match route.path
-          else false
+          when %r{\/\:\w+\/?} then !build_params(route).empty?
+          else String
+            route.path == path
           end
         end
       end

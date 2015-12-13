@@ -68,6 +68,14 @@ describe RackOnWheels::Router do
       it { expect(found_route.params).to eql(id: '12') }
     end
 
+    context 'when route path definition is regexp /(.+)/' do
+      let(:path_def) { /(.+)/ }
+      let(:path_req) { '/whatever' }
+      let(:found_route) { subject.detect }
+
+      it { expect(found_route).to eql route }
+    end
+
     context 'when route path definition is /users/:user_id/comments/:id' do
       let(:path_def) { '/users/:user_id/comments/:id' }
       let(:path_req) { '/users/12/comments/13' }
