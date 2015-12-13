@@ -1,6 +1,17 @@
 require 'spec_helper'
 
 describe RackOnWheels::Router do
+  context 'when route not defined' do
+    let(:request) do
+      double path_info: '/test', request_method: 'GET'
+    end
+
+    it 'raise exception' do
+      expect { described_class.find_route request }
+        .to raise_error RackOnWheels::PageNotFoundError
+    end
+  end
+
   describe RackOnWheels::Router::Route do
     let(:route) do
       RackOnWheels.routes[:get].first

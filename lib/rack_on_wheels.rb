@@ -11,6 +11,7 @@ module RackOnWheels
   require 'rack_on_wheels/base_controller'
   require 'rack_on_wheels/test_helper'
   require 'rack_on_wheels/initializer'
+  require 'rack_on_wheels/errors'
 
   class << self
     attr_reader :routes, :middlewares

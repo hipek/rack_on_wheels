@@ -56,7 +56,14 @@ module RackOnWheels
         Matcher.new(
           request.path_info,
           routes[request.request_method.downcase.to_sym]
-        ).detect
+        ).detect || not_found_error(request)
+      end
+
+      def not_found_error(request)
+        fail(
+          RackOnWheels::PageNotFoundError,
+          request.path_info + ' 404 - Not found'
+        )
       end
 
       def routes
