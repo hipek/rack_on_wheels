@@ -22,7 +22,7 @@ Or install it yourself as:
 
 Start example app:
 
-    ruby app/main.rb
+    ruby examples/single.rb
 
 Go to http://localhost:8080/ to see the page
 
@@ -31,6 +31,10 @@ Go to http://localhost:8080/ to see the page
 Run unit tests:
 
     bundle exec rake
+
+Run rubocop:
+
+    bundle exec rake rubocop
 
 ## Contributing
 

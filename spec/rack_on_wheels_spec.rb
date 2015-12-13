@@ -22,6 +22,41 @@ describe RackOnWheels do
     expect(described_class::VERSION).not_to be nil
   end
 
+  describe '#root' do
+    context 'when APP_ROOT not set' do
+      it { expect { described_class.root }.to raise_error StandardError }
+    end
+
+    context 'when APP_ROOT is set' do
+      before { Object.const_set 'APP_ROOT', './' }
+
+      after { Object.send :remove_const, 'APP_ROOT' }
+
+      it { expect(described_class.root).to eql './' }
+    end
+  end
+
+  describe '#run' do
+    it 'starts server with rack app' do
+      expect(Rack::Server).to receive(:start).with(app: kind_of(Rack::Builder))
+    end
+
+    after { described_class.run }
+  end
+
+  describe '#initialize!' do
+    before do
+      expect(described_class).to receive(:root) { Dir.pwd + '/spec/dummy' }
+    end
+
+    it 'requires routes and one contrller from dummy' do
+      expect_any_instance_of(described_class::Initializer)
+        .to receive(:require).twice
+    end
+
+    after { described_class.initialize! }
+  end
+
   describe '#routes' do
     context 'default' do
       it 'has blank hash' do

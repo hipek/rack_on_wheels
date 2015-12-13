@@ -10,6 +10,7 @@ module RackOnWheels
   require 'rack_on_wheels/router'
   require 'rack_on_wheels/base_controller'
   require 'rack_on_wheels/test_helper'
+  require 'rack_on_wheels/initializer'
 
   class << self
     attr_reader :routes, :middlewares
@@ -23,7 +24,15 @@ module RackOnWheels
     end
 
     def root
-      File.expand_path('../../', __FILE__)
+      if defined? APP_ROOT
+        APP_ROOT
+      else
+        fail 'APP_ROOT is required to start the app'
+      end
+    end
+
+    def initialize!
+      RackOnWheels::Initializer.new(root).run
     end
 
     def application

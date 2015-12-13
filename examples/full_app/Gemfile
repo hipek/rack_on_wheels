@@ -1,0 +1,5 @@
+source 'https://rubygems.org'
+
+gem 'rack_on_wheels', path: '../../'
+# gem 'rack_on_wheels', git: 'https://github.com/hipek/rack_on_wheels.git'
+gem 'thin'
