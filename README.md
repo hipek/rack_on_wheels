@@ -26,6 +26,37 @@ Start example app:
 
 Go to http://localhost:8080/ to see the page
 
+TO full app example from examples go to
+
+    examples/full_app
+
+and run:
+
+    bundle install
+
+To start server use:
+
+    bundle exec thin start
+
+Go to http://localhost:3000/
+
+## How to test controller
+
+Include test helper in spec helper:
+
+    RSpec.configure do |config|
+      config.include RackOnWheels::TestHelper
+    end
+
+Then use
+
+    describe 'test' do
+      before { get '/test/new' }
+
+      it { expect(response).not_to eql nil }
+    end
+
+
 ## Development
 
 Run unit tests:

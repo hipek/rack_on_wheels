@@ -19,8 +19,11 @@ class UsersController < RackOnWheels::BaseController
   end
 
   def index
-    'index'
+    'Welcome on index page'
   end
 end
+
+# Add cusom middleware
+# RackOnWheels.middlewares << CustomMiddleware
 
 RackOnWheels.run

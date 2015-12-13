@@ -1,5 +1,6 @@
-PATH
-  remote: ../../
+GIT
+  remote: https://github.com/hipek/rack_on_wheels.git
+  revision: c0ea07f4ec96fac4bc846e19916f782e72941b88
   specs:
     rack_on_wheels (0.1.0)
       rack (~> 1.6.4)
