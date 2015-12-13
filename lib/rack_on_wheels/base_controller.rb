@@ -1,7 +1,7 @@
 module RackOnWheels
   BaseController = Struct.new(:request, :route) do
     class << self
-      def build(route, request)
+      def build(request, route)
         const_get("#{route.controller}Controller").new(request, route)
       rescue NameError
         raise(
@@ -9,6 +9,10 @@ module RackOnWheels
           "500 - controller '#{route.controller}' not found"
         )
       end
+    end
+
+    def params
+      @params ||= request.params.merge(route.params || {})
     end
 
     def response

@@ -17,11 +17,22 @@ describe RackOnWheels::BaseController do
     class MyTestController < RackOnWheels::BaseController
     end
 
-    let(:request) { double(:request) }
+    let(:request) { double(:request, params: { a: 'b' }) }
+
+    describe '#params' do
+      let(:controller) do
+        described_class.build(
+          request,
+          double(controller: 'MyTest', params: { c: 'd' })
+        )
+      end
+
+      it { expect(controller.params).to eql(a: 'b', c: 'd') }
+    end
 
     describe '#build' do
       let(:controller) do
-        described_class.build double(controller: 'MyTest'), request
+        described_class.build request, double(controller: 'MyTest')
       end
 
       it 'returns instance of controller' do
@@ -34,7 +45,7 @@ describe RackOnWheels::BaseController do
 
       context 'when controller not defined' do
         subject do
-          described_class.build double(controller: 'Other'), request
+          described_class.build request, double(controller: 'Other')
         end
 
         it 'raises error' do
@@ -47,8 +58,8 @@ describe RackOnWheels::BaseController do
     describe '#exec_action' do
       let(:controller) do
         described_class.build(
-          double(controller: 'MyTest', action: :new),
-          request
+          request,
+          double(controller: 'MyTest', action: :new)
         )
       end
 

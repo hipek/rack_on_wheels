@@ -15,7 +15,7 @@ module RackOnWheels
       def perform(env)
         @request    = Rack::Request.new env
         @route      = RackOnWheels::Router.find_route request
-        @controller = RackOnWheels::BaseController.build route, request
+        @controller = RackOnWheels::BaseController.build request, route
 
         set_body
         set_headers

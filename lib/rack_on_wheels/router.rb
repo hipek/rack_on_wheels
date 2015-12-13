@@ -21,7 +21,7 @@ module RackOnWheels
           case route.path
           when Regexp then path.match route.path
           when %r{\/\:\w+\/?} then !build_params(route).empty?
-          else String
+          else
             route.path == path
           end
         end
